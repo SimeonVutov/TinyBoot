@@ -1,24 +1,41 @@
 # TinyBoot
 
-TinyBoot is a minimal x86_64 UEFI bootloader written as a low-level systems programming project. The goal is to understand how a bootloader loads a Linux kernel, prepares the required boot parameters, exits UEFI boot services, and transfers control to the kernel.
+TinyBoot is a minimal x86_64 UEFI bootloader for loading Linux `bzImage` kernels from a configurable boot menu.
 
-The project focuses on a small and maintainable implementation rather than trying to replace full-featured bootloaders such as GRUB or systemd-boot.
+The project is intended as a low-level systems programming exercise focused on the Linux boot process, UEFI boot services, memory map handling, and kernel handoff. It is deliberately small in scope and is not intended to replace mature bootloaders such as GRUB or systemd-boot.
 
-## Goals
+## Features
 
-The main goals of TinyBoot are:
+- x86_64 UEFI application
+- Linux `bzImage` loading
+- Linux boot protocol header parsing
+- Kernel command line support
+- Initrd loading
+- UEFI memory map handling
+- Serial debug output
+- Configurable boot entries
+- Minimal text-based boot menu
 
-- Run as an x86_64 UEFI application.
-- Load a Linux `bzImage` kernel from the EFI System Partition.
-- Parse the Linux x86 boot protocol header.
-- Prepare the required Linux boot parameters.
-- Pass a kernel command line.
-- Exit UEFI boot services correctly.
-- Transfer control to the Linux kernel.
-- Provide a minimal boot selection interface.
+## Scope
 
-## Status
+TinyBoot targets QEMU with OVMF as the primary development environment. It expects a FAT-formatted EFI System Partition containing the bootloader, configuration file, Linux kernel image, and optional initrd.
 
-TinyBoot is currently in early development.
+## Non-goals
 
-The first objective is to produce a minimal UEFI bootloader capable of loading and entering a Linux kernel in QEMU.
+TinyBoot does not aim to support BIOS boot, Secure Boot, Windows boot, encrypted disks, automatic OS discovery, advanced filesystem drivers, or full graphical boot manager functionality.
+
+## Example Configuration
+
+```ini
+timeout = 5
+default = arch
+
+[arch]
+kernel = /EFI/TINYBOOT/vmlinuz
+initrd = /EFI/TINYBOOT/initrd.img
+cmdline = console=ttyS0 root=/dev/ram0
+
+[rescue]
+kernel = /EFI/TINYBOOT/vmlinuz
+initrd = /EFI/TINYBOOT/initrd-rescue.img
+cmdline = console=ttyS0 debug
