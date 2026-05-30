@@ -143,4 +143,6 @@ The first step is a minimal UEFI application that builds successfully as `BOOTX6
 
 ## License
 
-License information will be added later.
+TinyBoot is licensed under the Apache License 2.0.
+
+See [LICENSE](LICENSE) and [NOTICE](NOTICE) for details.
