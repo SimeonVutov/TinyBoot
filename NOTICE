@@ -1,0 +1,6 @@
+TinyBoot
+Copyright 2026 Simeon Vutov
+
+This project includes original bootloader implementation work by Simeon Vutov.
+If source code from this project is reused, the copyright notice and license
+must be preserved according to the Apache License 2.0.
