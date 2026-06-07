@@ -1,5 +1,8 @@
 BUILD := build
 
+ESP_DIR := esp/EFI/BOOT
+ESP_TARGET := $(ESP_DIR)/BOOTX64.EFI
+
 CC := gcc
 LD := ld
 OBJCOPY := objcopy
@@ -47,7 +50,7 @@ LDFLAGS := \
 
 .PHONY: all clean compdb
 
-all: $(BUILD)/BOOTX64.EFI
+all: $(ESP_TARGET)
 
 $(BUILD):
 	mkdir -p $(BUILD)
@@ -74,6 +77,12 @@ $(BUILD)/BOOTX64.EFI: $(BUILD)/tinyboot.so
 		$(BUILD)/tinyboot.so \
 		$(BUILD)/BOOTX64.EFI
 
+$(ESP_DIR):
+	mkdir -p $(ESP_DIR)
+
+$(ESP_TARGET): $(BUILD)/BOOTX64.EFI | $(ESP_DIR)
+	cp $(BUILD)/BOOTX64.EFI $(ESP_TARGET)
+
 compdb:
 	$(MAKE) clean
 	mkdir -p $(BUILD)
@@ -82,5 +91,5 @@ compdb:
 
 clean:
 	rm -rf $(BUILD)
-
+	rm -f $(ESP_TARGET)
 
